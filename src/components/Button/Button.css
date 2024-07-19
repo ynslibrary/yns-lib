@@ -1,8 +1,5 @@
 .button {
-    color: #fff;
     border: none;
-    padding: 10px 30px;
-    border-radius: 10px;
     cursor: pointer;
 }
 
@@ -10,6 +7,10 @@
     background-color: #004B93;
 }
 
-.button-secondory {
+.button-secondary {
     background-color: #79B2E1;
+}
+
+.button-success {
+    background-color: #24C18F;
 }
