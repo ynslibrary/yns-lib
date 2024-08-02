@@ -1,6 +1,6 @@
 {
   "name": "ynslib",
-  "version": "0.1.10",
+  "version": "0.1.14",
   "description": "A simple template for a custom React component library",
   "scripts": {
     "rollup": "rollup -c",
@@ -30,6 +30,7 @@
     "@storybook/react": "^8.1.11",
     "@storybook/react-webpack5": "^8.1.11",
     "@storybook/test": "^8.1.11",
+    "@testing-library/jest-dom": "^6.4.6",
     "@testing-library/react": "^16.0.0",
     "@types/jest": "^29.5.12",
     "@types/react": "^18.3.3",
