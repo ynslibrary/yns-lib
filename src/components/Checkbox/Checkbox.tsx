@@ -1,23 +1,84 @@
 import React, { useCallback } from 'react';
-import './Checkbox.css';
+import styled from 'styled-components';
 
 // Define the CheckboxProps interface for prop types
 export interface CheckboxProps {
-    className?: string; // Optional class name for custom styling
-    label: string; // Label text for the checkbox
-    checked: boolean; // Checked state of the checkbox
-    disabled?: boolean; // Disabled state of the checkbox (default is false)
-    onChange: (checked: boolean) => void; // Change event handler
-    textColor?: string; // Optional text color for the label
-    fontSize?: number; // Optional font size for the label
-    fontWeight?: number; // Optional font weight for the label
-    name?: string; // Optional name attribute for the input element
-    onClick?: (event: React.MouseEvent<HTMLInputElement, MouseEvent>) => void; // Optional click event handler for the input element
+    className?: string;
+    label: string;
+    checked: boolean;
+    disabled?: boolean;
+    onChange: (checked: boolean) => void;
+    textColor?: string;
+    fontSize?: number;
+    fontWeight?: number;
+    name?: string;
+    onClick?: (event: React.MouseEvent<HTMLInputElement, MouseEvent>) => void;
 }
+
+// Styled components
+const Label = styled.label<{ disabled: boolean; textColor: string; fontSize: number; fontWeight: number }>`
+    display: flex;
+    align-items: center;
+    cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
+    color: ${({ textColor }) => textColor};
+    font-size: ${({ fontSize }) => `${fontSize}px`};
+    font-weight: ${({ fontWeight }) => fontWeight};
+    opacity: ${({ disabled }) => (disabled ? 0.5 : 1)};
+`;
+
+const Input = styled.input`
+    display: none;
+`;
+
+const Checkmark = styled.span<{ disabled: boolean }>`
+    width: 20px;
+    height: 20px;
+    border: 1px solid #ccc;
+    margin-right: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    border-radius: 4px;
+    background-color: #fff;
+
+    &::after {
+        content: "✔";
+        font-size: 16px;
+        color: white;
+        background-color: #004B93;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        opacity: 0;
+        width: 100%;
+        height: 100%;
+        border-radius: 4px;
+        transform: scale(0);
+        transition: opacity 0.2s, transform 0.2s;
+    }
+
+    ${Input}:checked + &::after {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    ${Input}:disabled + & {
+        border-color: #ccc;
+    }
+    
+    ${({ disabled }) => disabled && `
+        background-color: #ccc;
+    `}
+`;
+
+const LabelText = styled.span`
+    display: inline-block;
+`;
 
 // Define the Checkbox component as a functional component
 const Checkbox: React.FC<CheckboxProps> = ({
-    className,
+    className = '',
     label,
     checked,
     disabled = false,
@@ -36,13 +97,14 @@ const Checkbox: React.FC<CheckboxProps> = ({
     }, [onChange, disabled]);
 
     return (
-        <label
-            className={`checkbox ${disabled ? 'disabled' : ''} ${className}`} // Apply CSS classes conditionally
-            style={{ color: textColor, fontSize: `${fontSize}px`, fontWeight }} // Apply inline styles
-            htmlFor="checkbox-input" // Associate the label with the input element
+        <Label
+            className={className}
+            disabled={disabled}
+            textColor={textColor}
+            fontSize={fontSize}
+            fontWeight={fontWeight}
         >
-            <input
-                id="checkbox-input"
+            <Input
                 type="checkbox"
                 checked={checked}
                 disabled={disabled}
@@ -51,9 +113,9 @@ const Checkbox: React.FC<CheckboxProps> = ({
                 name={name}
                 onClick={onClick}
             />
-            <span className="checkmark"></span> {/* Custom checkmark */}
-            <span className="label">{label}</span> {/* Checkbox label */}
-        </label>
+            <Checkmark disabled={disabled} />
+            <LabelText>{label}</LabelText>
+        </Label>
     );
 };
 

@@ -54,4 +54,21 @@ describe('Checkbox', () => {
         const labelElement = screen.getByText(/This is a label/i).closest('label');
         expect(labelElement?.className).toContain('disabled'); // Check if the label contains 'disabled' class
     });
+
+    // Test case for verifying checkbox label styling with custom text color, font size, and font weight
+    test('checkbox label has custom text color, font size, and font weight', () => {
+        const handleChange = jest.fn();
+        render(
+            <Checkbox
+                label="Styled Label"
+                checked={false}
+                onChange={handleChange}
+                textColor="#FF0000"
+                fontSize={18}
+                fontWeight={700}
+            />
+        );
+        const labelElement = screen.getByText(/Styled Label/i);
+        expect(labelElement).toHaveStyle({ color: '#FF0000', fontSize: '18px', fontWeight: '700' });
+    });
 });
